@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tribute Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        #main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #title {
+            font-size: 2.5em;
+            color: #2c3e50;
+        }
+
+        #img-div {
+            text-align: center;
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #image {
+            display: block; /* Explicitly set display to block */
+            max-width: 100%; /* Ensure max-width is 100% */
+            height: auto;
+            margin: 0 auto; /* Center the image */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #img-caption {
+            font-size: 1em;
+            margin-top: 10px;
+            color: #555;
+            text-align: center;
+        }
+
+        #tribute-info {
+            font-size: 1.1em;
+            margin: 20px 0;
+        }
+
+        #tribute-link {
+            display: inline-block;
+            font-size: 1em;
+            color: #1abc9c;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        #tribute-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <main id="main">
+        <header>
+            <h1 id="title">Dr. Jane Goodall: A Tribute</h1>
+        </header>
+        <div id="img-div">
+            <img id="image" src="https://via.placeholder.com/600x400" alt="Dr. Jane Goodall" />
+            <figcaption id="img-caption">
+                Dr. Jane Goodall observing chimpanzees in their natural habitat.
+            </figcaption>
+        </div>
+        <section id="tribute-info">
+            <p>
+                Dr. Jane Goodall is a renowned primatologist, ethologist, and anthropologist who is widely recognized for her groundbreaking research on chimpanzees in Michael's National Park, Trinidad. Her work revolutionized the field of animal behavior and conservation efforts worldwide.
+            </p>
+        </section>
+        <footer>
+            <a id="tribute-link" href="https://www.janegoodall.org/" target="_blank">
+                Learn more about Dr. Jane Goodall's work here.
+            </a>
+        </footer>
+    </main>
+</body>
+</html>
