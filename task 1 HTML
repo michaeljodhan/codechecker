@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Form</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <h1 id="title">Customer Feedback Survey</h1>
+    <p id="description">We value your feedback! Please take a moment to complete this survey.</p>
+
+    <form id="survey-form">
+      <!-- Name Input -->
+      <label id="name-label" for="name">Name:</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Enter your full name"
+        required
+      >
+
+      <!-- Email Input -->
+      <label id="email-label" for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Enter your email address"
+        required
+      >
+
+      <!-- Number Input -->
+      <label id="number-label" for="number">Age:</label>
+      <input
+        type="number"
+        id="number"
+        name="age"
+        placeholder="Enter your age"
+        min="18"
+        max="100"
+        required
+      >
+
+      <!-- Dropdown -->
+      <label for="dropdown">Which service did you use?</label>
+      <select id="dropdown" name="service">
+        <option value="spa">Spa</option>
+        <option value="bar">Bar</option>
+        <option value="hotel">Hotel</option>
+      </select>
+
+      <!-- Radio Buttons -->
+      <fieldset>
+        <legend>How satisfied are you with our service?</legend>
+        <input type="radio" id="very-satisfied" name="satisfaction" value="very-satisfied" required>
+        <label for="very-satisfied">Very Satisfied</label><br>
+        <input type="radio" id="satisfied" name="satisfaction" value="satisfied">
+        <label for="satisfied">Satisfied</label><br>
+        <input type="radio" id="not-satisfied" name="satisfaction" value="not-satisfied">
+        <label for="not-satisfied">Not Satisfied</label>
+      </fieldset>
+
+      <!-- Checkboxes -->
+      <fieldset>
+        <legend>What features did you enjoy? (Select all that apply)</legend>
+        <input type="checkbox" id="cleanliness" name="features" value="cleanliness">
+        <label for="cleanliness">Cleanliness</label><br>
+        <input type="checkbox" id="staff" name="features" value="staff">
+        <label for="staff">Friendly Staff</label><br>
+        <input type="checkbox" id="value" name="features" value="value">
+        <label for="value">Good Value</label>
+      </fieldset>
+
+      <!-- Textarea -->
+      <label for="comments">Additional Comments:</label>
+      <textarea id="comments" name="comments" placeholder="Share your thoughts here..."></textarea>
+
+      <!-- Submit Button -->
+      <button id="submit" type="submit">Submit</button>
+    </form>
+  </main>
+</body>
+</html>
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+main {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #4CAF50;
+}
+
+p {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+
+input, select, textarea, button {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #45a049;
+}
+
+textarea {
+  resize: vertical;
+}
+
+fieldset {
+  border: none;
+  margin: 15px 0;
+}
+
+legend {
+  font-weight: bold;
+}
