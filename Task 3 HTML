@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Documentation Page</title>
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #navbar {
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+        }
+        #navbar header {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        #navbar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+        #navbar a:hover {
+            text-decoration: underline;
+        }
+        #main-doc {
+            margin-left: 270px;
+            padding: 20px;
+            flex: 1;
+        }
+        .main-section {
+            margin-bottom: 40px;
+        }
+        /* Media query for Reference section */
+        @media print {
+            #reference {
+                font-size: 0.8em;
+                color: #666;
+                border-top: 1px solid #ccc;
+                margin-top: 20px;
+                padding-top: 10px;
+            }
+            #reference a {
+                color: #000;
+                text-decoration: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <header>Technical Documentation</header>
+        <a class="nav-link" href="#Introduction">Introduction</a>
+        <a class="nav-link" href="#Getting_Started">Getting Started</a>
+        <a class="nav-link" href="#Basic_Concepts">Basic Concepts</a>
+        <a class="nav-link" href="#Advanced_Topics">Advanced Topics</a>
+        <a class="nav-link" href="#Conclusion">Conclusion</a>
+        <a class="nav-link" href="#Reference">Reference</a>
+    </nav>
+
+    <main id="main-doc">
+        <section id="Introduction" class="main-section">
+            <header>Introduction</header>
+            <p>Welcome to the technical documentation page. This section provides an overview of the documentation structure.</p>
+            <p>Our goal is to help you get started quickly with all the information you need.</p>
+            <code>npm install -g documentation</code>
+            <ul>
+                <li>Understand the basics</li>
+                <li>Read through the examples</li>
+            </ul>
+            <p>All the documentation in this section is taken from <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide" target="_blank">MDN Web Docs</a>.</p>
+        </section>
+        <section id="Getting_Started" class="main-section">
+            <header>Getting Started</header>
+            <p>In this section, we will help you set up your environment and install all necessary tools.</p>
+            <p>To get started, make sure to have the latest version installed.</p>
+            <code>node -v</code>
+            <p>All the documentation in this section is taken from <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide" target="_blank">MDN Web Docs</a>.</p>
+        </section>
+        <section id="Basic_Concepts" class="main-section">
+            <header>Basic Concepts</header>
+            <p>This section will introduce you to the core concepts of this technical documentation.</p>
+            <p>We will discuss the following concepts:</p>
+            <ul>
+                <li>Data Binding</li>
+                <li>Component Lifecycle</li>
+                <li>Virtual DOM</li>
+            </ul>
+            <code>let x = 10;</code>
+            <p>All the documentation in this section is taken from <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide" target="_blank">MDN Web Docs</a>.</p>
+        </section>
+        <section id="Advanced_Topics" class="main-section">
+            <header>Advanced Topics</header>
+            <p>Once you have mastered the basics, you can move on to advanced topics.</p>
+            <p>Advanced topics include performance optimization and scaling.</p>
+            <code>optimizePerformance()</code>
+            <ul>
+                <li>Lazy Loading</li>
+                <li>Code Splitting</li>
+                <li>Server-side Rendering</li>
+            </ul>
+            <p>All the documentation in this section is taken from <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide" target="_blank">MDN Web Docs</a>.</p>
+        </section>
+        <section id="Conclusion" class="main-section">
+            <header>Conclusion</header>
+            <p>This concludes our technical documentation. Thank you for reading.</p>
+            <p>If you have any questions, feel free to reach out.</p>
+            <code>contactSupport()</code>
+            <p>All the documentation in this section is taken from <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide" target="_blank">MDN Web Docs</a>.</p>
+        </section>
+        <section id="Reference" class="main-section">
+            <header>Reference</header>
+            <p>All the documentation in this page is taken from <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide" target="_blank">MDN Web Docs</a>.</p>
+        </section>
+    </main>
+</body>
+</html>
