@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Palindrome Checker</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: monospace, sans-serif;
+    background: #292929;
+    color: #fff;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 3em;
+    margin: 1em 0 0.5em;
+    text-transform: uppercase;
+  }
+  
+  #main {
+    margin: 3em auto;
+    max-width: 600px;
+    width: 90%;
+  }
+  
+  #text-input {
+    width: 60%;
+    max-width: 350px;
+    padding: 10px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  #check-btn {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+    background: #00b894;
+    color: #292929;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+  
+  #check-btn:hover {
+    background: #009975;
+  }
+  
+  #result {
+    font-size: 1.2em;
+    margin-top: 2em;
+    word-wrap: break-word;
+  }
+</style>
+</head>
+<body>
+  <h1>Palindrome Checker</h1>
+  <div id="main">
+    <div>
+      <input type="text" id="text-input" placeholder="Enter text here" />
+      <button id="check-btn">Check</button>
+    </div>
+    <p id="result"></p>
+  </div>
+
+<script>
+  document.getElementById('check-btn').addEventListener('click', function() {
+    const userInput = document.getElementById('text-input').value;
+    const resultElement = document.getElementById('result');
+    
+    // If no input provided, alert the user
+    if(!userInput.trim()) {
+      alert("Please input a value");
+      return;
+    }
+
+    // Normalize input: remove all non-alphanumeric chars and convert to lowercase
+    const cleaned = userInput.toLowerCase().replace(/[\W_]/g, '');
+    
+    // Check palindrome
+    const isPalindrome = cleaned === cleaned.split('').reverse().join('');
+    
+    if(isPalindrome) {
+      resultElement.innerText = `${userInput} is a palindrome`;
+    } else {
+      resultElement.innerText = `${userInput} is not a palindrome`;
+    }
+  });
+</script>
+</body>
+</html>
+body {
+  font-family: Arial, sans-serif;
+  background: #f8f9fa;
+  color: #333;
+  text-align: center;
+  padding-top: 50px;
+}
+
+.container {
+  display: inline-block;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.input-section {
+  margin-bottom: 20px;
+}
+
+#text-input {
+  padding: 10px;
+  width: 60%;
+  font-size: 16px;
+}
+
+#check-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-left: 10px;
+  cursor: pointer;
+  background: #007bff;
+  border: none;
+  color: #ffffff;
+  border-radius: 5px;
+}
+
+#check-btn:hover {
+  background: #0056b3;
+}
+
+#result {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+document.getElementById('check-btn').addEventListener('click', function() {
+  const userInput = document.getElementById('text-input').value;
+  const resultElement = document.getElementById('result');
+  
+  // If no input provided, alert the user
+  if(!userInput.trim()) {
+    alert("Please input a value");
+    return;
+  }
+
+  // Normalize input: remove all non-alphanumeric chars and convert to lowercase
+  const cleaned = userInput.toLowerCase().replace(/[\W_]/g, '');
+  
+  // Check palindrome
+  const isPalindrome = cleaned === cleaned.split('').reverse().join('');
+  
+  if(isPalindrome) {
+    resultElement.innerText = `${userInput} is a palindrome`;
+  } else {
+    resultElement.innerText = `${userInput} is not a palindrome`;
+  }
+});
