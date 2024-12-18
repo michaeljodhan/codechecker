@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+  <title>US Phone Number Validator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2em;
+    }
+    #user-input {
+      width: 300px;
+      padding: 5px;
+    }
+    button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    #results-div {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>US Telephone Number Validator</h1>
+
+  <label for="user-input">Enter US Phone Number:</label><br><br>
+  <input type="text" id="user-input" placeholder="e.g. 555-555-5555"/>
+  <button id="check-btn">Check</button>
+  <button id="clear-btn">Clear</button>
+
+  <div id="results-div"></div>
+
+  <script>
+    const userInput = document.getElementById('user-input');
+    const checkBtn = document.getElementById('check-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const resultsDiv = document.getElementById('results-div');
+
+    // A regex that covers the known valid patterns for US phone numbers
+    // Matching rules:
+    //  - Optional country code of '1' followed by space or no space: (1\s?)?
+    //  - Area code either in parentheses or not: (\(\d{3}\)|\d{3})
+    //  - Optional separator (space or dash): [\s-]?
+    //  - Three digits: \d{3}
+    //  - Optional separator (space or dash): [\s-]?
+    //  - Four digits: \d{4}
+    const phoneRegex = /^(1\s?)?(\(\d{3}\)|\d{3})[\s-]?\d{3}[\s-]?\d{4}$/;
+
+    function validatePhoneNumber(str) {
+      return phoneRegex.test(str);
+    }
+
+    checkBtn.addEventListener('click', () => {
+      const val = userInput.value.trim();
+      if (!val) {
+        alert("Please provide a phone number");
+        return;
+      }
+
+      if (validatePhoneNumber(val)) {
+        resultsDiv.textContent = "Valid US number: " + val;
+      } else {
+        resultsDiv.textContent = "Invalid US number: " + val;
+      }
+    });
+
+    clearBtn.addEventListener('click', () => {
+      resultsDiv.textContent = "";
+      userInput.value = "";
+    });
+  </script>
+</body>
+</html>
