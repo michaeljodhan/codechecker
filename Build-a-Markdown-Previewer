@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Previewer</title>
+  <!-- Include Bootstrap for basic styling -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Custom styles for the Markdown Previewer */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+    #editor {
+      font-family: monospace;
+      background-color: #e9ecef;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+    }
+    #preview {
+      background-color: #fff;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      overflow-y: auto;
+      max-height: 500px;
+    }
+    h1, h2 {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Include React, ReactDOM, and Marked libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <script>
+    // Default Markdown text
+    const defaultMarkdown = `# Heading 1\n\n## Subheading\n\n[FreeCodeCamp](https://www.freecodecamp.org)\n\n\`Inline Code\`\n\n\`\`\`\nCode Block\n\`\`\`\n\n- List Item 1\n- List Item 2\n\n> Blockquote\n\n![Image](https://via.placeholder.com/150)\n\n**Bold Text**\n`;
+
+    // Main App Component
+    function MarkdownPreviewer() {
+      const [markdown, setMarkdown] = React.useState(defaultMarkdown);
+
+      // Update markdown state as user types
+      const handleChange = (e) => {
+        setMarkdown(e.target.value);
+      };
+
+      // Convert markdown to HTML using marked library
+      const renderMarkdown = () => {
+        return { __html: marked(markdown, { breaks: true }) };
+      };
+
+      return (
+        <div className="container">
+          <h1 className="text-center my-4">Markdown Previewer</h1>
+          <div className="row">
+            <div className="col-md-6">
+              <h2>Editor</h2>
+              <textarea
+                id="editor"
+                className="form-control"
+                rows="20"
+                value={markdown}
+                onChange={handleChange}
+              ></textarea>
+            </div>
+            <div className="col-md-6">
+              <h2>Preview</h2>
+              <div
+                id="preview"
+                className="border p-3"
+                dangerouslySetInnerHTML={renderMarkdown()}
+              ></div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Render the app
+    ReactDOM.render(<MarkdownPreviewer />, document.getElementById('root'));
+  </script>
+</body>
+</html>
