@@ -1,0 +1,139 @@
+<!-- HTML Section -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drum Machine</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+  <script type="module" src="index.js"></script>
+</body>
+</html>
+
+/* React Section */
+// index.js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import App from './App';
+import reducer from './reducer';
+import './styles.css';
+
+const store = createStore(reducer);
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+
+// App.js
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSoundName } from './actions';
+
+const sounds = [
+  { key: 'Q', id: 'Heater-1', url: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3' },
+  { key: 'W', id: 'Heater-2', url: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3' },
+  { key: 'E', id: 'Heater-3', url: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3' },
+  { key: 'A', id: 'Heater-4', url: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3' },
+  { key: 'S', id: 'Clap', url: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3' },
+  { key: 'D', id: 'Open-HH', url: 'https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3' },
+  { key: 'Z', id: 'Kick-n-Hat', url: 'https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3' },
+  { key: 'X', id: 'Kick', url: 'https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3' },
+  { key: 'C', id: 'Closed-HH', url: 'https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3' }
+];
+
+function DrumPad({ sound }) {
+  const dispatch = useDispatch();
+
+  const playSound = () => {
+    const audio = document.getElementById(sound.key);
+    audio.play();
+    dispatch(setSoundName(sound.id));
+  };
+
+  return (
+    <div className="drum-pad btn btn-primary m-2" id={sound.id} onClick={playSound}>
+      {sound.key}
+      <audio className="clip" id={sound.key} src={sound.url}></audio>
+    </div>
+  );
+}
+
+function Display() {
+  const soundName = useSelector(state => state.soundName);
+  return <div id="display" className="text-center my-3">{soundName}</div>;
+}
+
+function App() {
+  return (
+    <div id="drum-machine" className="container text-center mt-5">
+      <Display />
+      <div className="d-flex flex-wrap justify-content-center">
+        {sounds.map(sound => (
+          <DrumPad key={sound.key} sound={sound} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+/* Redux Section */
+// actions.js
+export const setSoundName = (name) => ({
+  type: 'SET_SOUND_NAME',
+  payload: name
+});
+
+// reducer.js
+const initialState = {
+  soundName: ''
+};
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'SET_SOUND_NAME':
+      return { ...state, soundName: action.payload };
+    default:
+      return state;
+  }
+};
+
+export default reducer;
+
+/* CSS Section */
+/* styles.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #282c34;
+  color: white;
+}
+
+#drum-machine {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #333;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.drum-pad {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
