@@ -1,0 +1,205 @@
+// redux/store.js
+import { configureStore } from "@reduxjs/toolkit";
+import timerReducer from "./timerSlice";
+
+export const store = configureStore({
+  reducer: {
+    timer: timerReducer,
+  },
+});
+
+// redux/timerSlice.js
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  breakLength: 5,
+  sessionLength: 25,
+  timerState: "stopped",
+  timeLeft: 25 * 60,
+  isSession: true,
+};
+
+const timerSlice = createSlice({
+  name: "timer",
+  initialState,
+  reducers: {
+    incrementBreak: (state) => {
+      if (state.breakLength < 60) state.breakLength += 1;
+    },
+    decrementBreak: (state) => {
+      if (state.breakLength > 1) state.breakLength -= 1;
+    },
+    incrementSession: (state) => {
+      if (state.sessionLength < 60) {
+        state.sessionLength += 1;
+        if (state.isSession) state.timeLeft = state.sessionLength * 60;
+      }
+    },
+    decrementSession: (state) => {
+      if (state.sessionLength > 1) {
+        state.sessionLength -= 1;
+        if (state.isSession) state.timeLeft = state.sessionLength * 60;
+      }
+    },
+    startStop: (state) => {
+      state.timerState = state.timerState === "running" ? "paused" : "running";
+    },
+    reset: () => initialState,
+    decrementTimeLeft: (state) => {
+      if (state.timeLeft > 0) state.timeLeft -= 1;
+      else {
+        state.isSession = !state.isSession;
+        state.timeLeft = (state.isSession ? state.sessionLength : state.breakLength) * 60;
+      }
+    },
+  },
+});
+
+export const {
+  incrementBreak,
+  decrementBreak,
+  incrementSession,
+  decrementSession,
+  startStop,
+  reset,
+  decrementTimeLeft,
+} = timerSlice.actions;
+
+export default timerSlice.reducer;
+
+// components/App.js
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import BreakControls from "./BreakControls";
+import SessionControls from "./SessionControls";
+import TimerDisplay from "./TimerDisplay";
+import Controls from "./Controls";
+import { decrementTimeLeft } from "../redux/timerSlice";
+
+function App() {
+  const dispatch = useDispatch();
+  const timerState = useSelector((state) => state.timer.timerState);
+
+  useEffect(() => {
+    let timer;
+    if (timerState === "running") {
+      timer = setInterval(() => {
+        dispatch(decrementTimeLeft());
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [timerState, dispatch]);
+
+  return (
+    <div className="container text-center">
+      <h1>25 + 5 Clock</h1>
+      <div className="row">
+        <BreakControls />
+        <SessionControls />
+      </div>
+      <TimerDisplay />
+      <Controls />
+      <audio id="beep" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+    </div>
+  );
+}
+
+export default App;
+
+// components/BreakControls.js
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { incrementBreak, decrementBreak } from "../redux/timerSlice";
+
+function BreakControls() {
+  const dispatch = useDispatch();
+  const breakLength = useSelector((state) => state.timer.breakLength);
+
+  return (
+    <div id="break-controls">
+      <h2 id="break-label">Break Length</h2>
+      <button id="break-decrement" onClick={() => dispatch(decrementBreak())}>-</button>
+      <span id="break-length">{breakLength}</span>
+      <button id="break-increment" onClick={() => dispatch(incrementBreak())}>+</button>
+    </div>
+  );
+}
+
+export default BreakControls;
+
+// components/SessionControls.js
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { incrementSession, decrementSession } from "../redux/timerSlice";
+
+function SessionControls() {
+  const dispatch = useDispatch();
+  const sessionLength = useSelector((state) => state.timer.sessionLength);
+
+  return (
+    <div id="session-controls">
+      <h2 id="session-label">Session Length</h2>
+      <button id="session-decrement" onClick={() => dispatch(decrementSession())}>-</button>
+      <span id="session-length">{sessionLength}</span>
+      <button id="session-increment" onClick={() => dispatch(incrementSession())}>+</button>
+    </div>
+  );
+}
+
+export default SessionControls;
+
+// components/TimerDisplay.js
+import React from "react";
+import { useSelector } from "react-redux";
+
+function TimerDisplay() {
+  const timeLeft = useSelector((state) => state.timer.timeLeft);
+  const isSession = useSelector((state) => state.timer.isSession);
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  };
+
+  return (
+    <div id="timer">
+      <h2 id="timer-label">{isSession ? "Session" : "Break"}</h2>
+      <span id="time-left">{formatTime(timeLeft)}</span>
+    </div>
+  );
+}
+
+export default TimerDisplay;
+
+// components/Controls.js
+import React from "react";
+import { useDispatch } from "react-redux";
+import { startStop, reset } from "../redux/timerSlice";
+
+function Controls() {
+  const dispatch = useDispatch();
+
+  return (
+    <div id="controls">
+      <button id="start_stop" onClick={() => dispatch(startStop())}>Start/Stop</button>
+      <button id="reset" onClick={() => dispatch(reset())}>Reset</button>
+    </div>
+  );
+}
+
+export default Controls;
+
+// styles.scss
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.container {
+  margin-top: 50px;
+}
+
+button {
+  margin: 5px;
+}
