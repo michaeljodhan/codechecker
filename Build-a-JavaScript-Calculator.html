@@ -1,0 +1,160 @@
+// Import necessary libraries
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createStore } from 'redux';
+import { Provider, connect } from 'react-redux';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import $ from 'jquery';
+import './styles.scss';
+
+// Redux: Initial State
+const initialState = {
+  currentValue: '0',
+  previousValue: '',
+  operator: '',
+  formula: '',
+  evaluated: false,
+};
+
+// Redux: Actions
+const INPUT_NUMBER = 'INPUT_NUMBER';
+const INPUT_OPERATOR = 'INPUT_OPERATOR';
+const CLEAR = 'CLEAR';
+const INPUT_DECIMAL = 'INPUT_DECIMAL';
+const EVALUATE = 'EVALUATE';
+
+const inputNumber = (number) => ({ type: INPUT_NUMBER, number });
+const inputOperator = (operator) => ({ type: INPUT_OPERATOR, operator });
+const clear = () => ({ type: CLEAR });
+const inputDecimal = () => ({ type: INPUT_DECIMAL });
+const evaluate = () => ({ type: EVALUATE });
+
+// Redux: Reducer
+const calculatorReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case INPUT_NUMBER:
+      if (state.evaluated) {
+        return { ...state, currentValue: action.number, formula: action.number, evaluated: false };
+      }
+      if (state.currentValue === '0' || /[+\-*/]/.test(state.currentValue)) {
+        return { ...state, currentValue: action.number, formula: state.formula + action.number };
+      }
+      return { ...state, currentValue: state.currentValue + action.number, formula: state.formula + action.number };
+
+    case INPUT_OPERATOR:
+      if (state.evaluated) {
+        return { ...state, formula: state.currentValue + action.operator, operator: action.operator, evaluated: false };
+      }
+      if (/[+\-*/]$/.test(state.formula)) {
+        const updatedFormula = state.formula.slice(0, -1) + action.operator;
+        return { ...state, formula: updatedFormula, operator: action.operator, currentValue: action.operator };
+      }
+      return { ...state, formula: state.formula + action.operator, operator: action.operator, currentValue: action.operator };
+
+    case INPUT_DECIMAL:
+      if (state.currentValue.includes('.')) {
+        return state;
+      }
+      return { ...state, currentValue: state.currentValue + '.', formula: state.formula + '.' };
+
+    case CLEAR:
+      return initialState;
+
+    case EVALUATE:
+      try {
+        const evaluatedValue = eval(state.formula).toFixed(4).replace(/\.0+$/, '').replace(/(\.\d+?)0+$/, '$1');
+        return { ...state, currentValue: evaluatedValue, formula: state.formula + '=' + evaluatedValue, evaluated: true };
+      } catch (error) {
+        return state;
+      }
+
+    default:
+      return state;
+  }
+};
+
+const store = createStore(calculatorReducer);
+
+// React: Components
+const Calculator = ({
+  currentValue,
+  inputNumber,
+  inputOperator,
+  clear,
+  inputDecimal,
+  evaluate,
+}) => {
+  return (
+    <div className="calculator container text-center">
+      <div className="row justify-content-center">
+        <div className="col-6">
+          <div id="display" className="bg-dark text-white p-3 mb-3">
+            {currentValue}
+          </div>
+          <div className="button-panel">
+            <button id="clear" className="btn btn-danger" onClick={clear}>AC</button>
+            <button id="divide" className="btn btn-primary" onClick={() => inputOperator('/')}>/</button>
+            <button id="multiply" className="btn btn-primary" onClick={() => inputOperator('*')}>*</button>
+            {[7, 8, 9].map(num => (
+              <button
+                key={num}
+                id={['seven', 'eight', 'nine'][num - 7]}
+                className="btn btn-secondary"
+                onClick={() => inputNumber(num.toString())}
+              >
+                {num}
+              </button>
+            ))}
+            <button id="subtract" className="btn btn-primary" onClick={() => inputOperator('-')}>-</button>
+            {[4, 5, 6].map(num => (
+              <button
+                key={num}
+                id={['four', 'five', 'six'][num - 4]}
+                className="btn btn-secondary"
+                onClick={() => inputNumber(num.toString())}
+              >
+                {num}
+              </button>
+            ))}
+            <button id="add" className="btn btn-primary" onClick={() => inputOperator('+')}>+</button>
+            {[1, 2, 3].map(num => (
+              <button
+                key={num}
+                id={['one', 'two', 'three'][num - 1]}
+                className="btn btn-secondary"
+                onClick={() => inputNumber(num.toString())}
+              >
+                {num}
+              </button>
+            ))}
+            <button id="equals" className="btn btn-success" onClick={evaluate}>=</button>
+            <button id="zero" className="btn btn-secondary" onClick={() => inputNumber('0')}>0</button>
+            <button id="decimal" className="btn btn-secondary" onClick={inputDecimal}>.</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const mapStateToProps = (state) => ({
+  currentValue: state.currentValue,
+});
+
+const mapDispatchToProps = {
+  inputNumber,
+  inputOperator,
+  clear,
+  inputDecimal,
+  evaluate,
+};
+
+const ConnectedCalculator = connect(mapStateToProps, mapDispatchToProps)(Calculator);
+
+const App = () => (
+  <Provider store={store}>
+    <ConnectedCalculator />
+  </Provider>
+);
+
+ReactDOM.render(<App />, document.getElementById('root'));
