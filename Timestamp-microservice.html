@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timestamp Microservice</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Timestamp Microservice</h1>
+  <p>Enter a date or timestamp to get the Unix and UTC time:</p>
+  
+  <input type="text" id="dateInput" placeholder="e.g., 2025-01-01 or 1450137600">
+  <button onclick="fetchTimestamp()">Submit</button>
+  
+  <div id="result"></div>
+
+  <script>
+    async function fetchTimestamp() {
+      const dateInput = document.getElementById('dateInput').value;
+      const url = dateInput ? `/api/${dateInput}` : '/api';
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.error) {
+          document.getElementById('result').textContent = `Error: ${data.error}`;
+        } else {
+          document.getElementById('result').innerHTML = `
+            <strong>Unix:</strong> ${data.unix} <br>
+            <strong>UTC:</strong> ${data.utc}
+          `;
+        }
+      } catch (error) {
+        document.getElementById('result').textContent = 'An error occurred. Please try again.';
+      }
+    }
+  </script>
+</body>
+</html>
+Project Strcuture: 
+timestamp-microservice
+├── package.json
+├── server.js
+└── README.md
+Package.json
+{
+  "name": "timestamp-microservice",
+  "version": "1.0.0",
+  "description": "A simple API for timestamp conversion.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "keywords": [
+    "timestamp",
+    "microservice",
+    "freecodecamp"
+  ],
+  "author": "",
+  "license": "MIT"
+}
+Server.js
+const express = require("express");
+const cors = require("cors");
+
+const app = express();
+
+// Enable CORS to allow cross-origin requests
+app.use(cors({ optionsSuccessStatus: 200 }));
+
+// Root endpoint
+app.get("/", (req, res) => {
+  res.send("Timestamp Microservice - API Root");
+});
+
+// API endpoint for handling timestamps
+app.get("/api/:date?", (req, res) => {
+  const dateParam = req.params.date;
+
+  // If no date is provided, return the current timestamp
+  if (!dateParam) {
+    const currentDate = new Date();
+    return res.json({
+      unix: currentDate.getTime(),
+      utc: currentDate.toUTCString(),
+    });
+  }
+
+  // Check if the provided date is a valid UNIX timestamp or date string
+  let date;
+  if (!isNaN(dateParam)) {
+    // If it's a number, treat it as a UNIX timestamp
+    date = new Date(parseInt(dateParam));
+  } else {
+    // Otherwise, treat it as a date string
+    date = new Date(dateParam);
+  }
+
+  // If the date is invalid, return an error response
+  if (isNaN(date.getTime())) {
+    return res.json({ error: "Invalid Date" });
+  }
+
+  // Return the UNIX and UTC timestamp
+  res.json({
+    unix: date.getTime(),
+    utc: date.toUTCString(),
+  });
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+Server
+Here’s the complete code for the Timestamp Microservice project as per the FreeCodeCamp instructions:
+
+1. Requirements:
+	•	You should provide a project that fulfills these user stories:
+	•	A request to /api/:date? with a valid date should return a JSON object with a unix and utc property.
+	•	A request to /api/:date? with an invalid date should return the JSON { "error": "Invalid Date" }.
+	•	A request to /api without a date should return the current timestamp in JSON format.
+
+2. Code Implementation:
+
+Project Structure:
+
+timestamp-microservice
+├── package.json
+├── server.js
+└── README.md
+
+3. package.json:
+
+{
+  "name": "timestamp-microservice",
+  "version": "1.0.0",
+  "description": "A simple API for timestamp conversion.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "keywords": [
+    "timestamp",
+    "microservice",
+    "freecodecamp"
+  ],
+  "author": "",
+  "license": "MIT"
+}
+
+4. server.js:
+
+const express = require("express");
+const cors = require("cors");
+
+const app = express();
+
+// Enable CORS to allow cross-origin requests
+app.use(cors({ optionsSuccessStatus: 200 }));
+
+// Root endpoint
+app.get("/", (req, res) => {
+  res.send("Timestamp Microservice - API Root");
+});
+
+// API endpoint for handling timestamps
+app.get("/api/:date?", (req, res) => {
+  const dateParam = req.params.date;
+
+  // If no date is provided, return the current timestamp
+  if (!dateParam) {
+    const currentDate = new Date();
+    return res.json({
+      unix: currentDate.getTime(),
+      utc: currentDate.toUTCString(),
+    });
+  }
+
+  // Check if the provided date is a valid UNIX timestamp or date string
+  let date;
+  if (!isNaN(dateParam)) {
+    // If it's a number, treat it as a UNIX timestamp
+    date = new Date(parseInt(dateParam));
+  } else {
+    // Otherwise, treat it as a date string
+    date = new Date(dateParam);
+  }
+
+  // If the date is invalid, return an error response
+  if (isNaN(date.getTime())) {
+    return res.json({ error: "Invalid Date" });
+  }
+
+  // Return the UNIX and UTC timestamp
+  res.json({
+    unix: date.getTime(),
+    utc: date.toUTCString(),
+  });
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+License
+
+This project is licensed under the MIT License. 
