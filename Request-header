@@ -1,0 +1,50 @@
+mkdir request-header-parser
+cd request-header-parser
+npm init -y
+npm install express
+const express = require('express');
+const app = express();
+
+// Middleware to enable the 'trust proxy' setting if you're using a hosting service like Glitch or Replit
+app.enable('trust proxy');
+
+app.get('/api/whoami', (req, res) => {
+  // Extract information from the request headers
+  const ipaddress = req.ip;
+  const language = req.headers['accept-language'];
+  const software = req.headers['user-agent'];
+
+  // Respond with a JSON object
+  res.json({
+    ipaddress,
+    language,
+    software
+  });
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+const express = require('express');
+const app = express();
+
+app.enable('trust proxy');
+
+app.get('/api/whoami', (req, res) => {
+  const ipaddress = req.ip;
+  const language = req.get('accept-language');
+  const software = req.get('user-agent');
+
+  res.json({
+    ipaddress,
+    language,
+    software
+  });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
