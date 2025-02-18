@@ -1,0 +1,62 @@
+def arithmetic_arranger(problems, show_answers=False):
+
+    return problems
+
+print(f'\n{arithmetic_arranger(["32 + 698", "3801 - 2", "45 + 43", "123 + 49"])}')
+def arithmetic_arranger(problems, display_answers=False):
+    # Check for too many problems.
+    if len(problems) > 5:
+        return "Error: Too many problems."
+
+    first_line = []
+    second_line = []
+    dash_line = []
+    answer_line = []
+
+    # Process each problem.
+    for problem in problems:
+        parts = problem.split()
+        if len(parts) != 3:
+            return "Error: Each problem must contain two operands and one operator."
+
+        first_operand, operator, second_operand = parts
+
+        # Check operator.
+        if operator not in ['+', '-']:
+            return "Error: Operator must be '+' or '-'."
+
+        # Check if operands are digits.
+        if not first_operand.isdigit() or not second_operand.isdigit():
+            return "Error: Numbers must only contain digits."
+
+        # Check operand length.
+        if len(first_operand) > 4 or len(second_operand) > 4:
+            return "Error: Numbers cannot be more than four digits."
+
+        # Determine the width for the formatted problem.
+        width = max(len(first_operand), len(second_operand)) + 2
+
+        # Format the first and second lines.
+        first_line.append(first_operand.rjust(width))
+        second_line.append(operator + " " + second_operand.rjust(width - 2))
+        dash_line.append("-" * width)
+
+        # Calculate and format the answer if needed.
+        if operator == '+':
+            answer = int(first_operand) + int(second_operand)
+        else:
+            answer = int(first_operand) - int(second_operand)
+        answer_line.append(str(answer).rjust(width))
+
+    # Join each line with four spaces.
+    arranged_first = "    ".join(first_line)
+    arranged_second = "    ".join(second_line)
+    arranged_dash = "    ".join(dash_line)
+    
+    if display_answers:
+        arranged_answer = "    ".join(answer_line)
+        arranged_problems = f"{arranged_first}\n{arranged_second}\n{arranged_dash}\n{arranged_answer}"
+    else:
+        arranged_problems = f"{arranged_first}\n{arranged_second}\n{arranged_dash}"
+
+    return arranged_problems
